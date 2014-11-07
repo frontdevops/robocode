@@ -1,1 +1,0 @@
-{"version":3,"file":"main.js","sourceRoot":"","sources":["main.ts"],"names":["BattleManager","BattleManager.constructor","run"],"mappings":";IACA,IAAM,aAAa;QAAnBA,SAAMA,aAAaA;QAEnBC,CAACA;QAADD,oBAACA;IAADA,CAACA,AAFD,IAEC;IAED,SAAgB,GAAG;QAClBE,MAAMA,CAACA;YACNA,GAAGA,EAAEA;YAEL,CAAC;SACDA,CAAAA;IACFA,CAACA;IANe,WAAG,GAAH,GAMf,CAAA"}
