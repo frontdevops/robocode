@@ -72,7 +72,7 @@ var RobotBase = (function () {
             case "CALLBACK":
                 var callbacks = this._callbackStatus[msgObj.callbackId];
                 if (callbacks) {
-                    var callback = callbacks[msgObj["status"]];
+                    var callback = callbacks[msgObj.status];
                     if (callback) {
                         callback();
                     }
@@ -104,14 +104,19 @@ var RobotBase = (function () {
     };
     RobotBase.prototype.run = function () {
     };
+    RobotBase.exec = function (bot) {
+        onmessage = function (e) {
+            bot.receive(e.data);
+        };
+    };
     return RobotBase;
 })();
-var ScanBot = (function (_super) {
-    __extends(ScanBot, _super);
-    function ScanBot() {
+var TestBot = (function (_super) {
+    __extends(TestBot, _super);
+    function TestBot() {
         _super.apply(this, arguments);
     }
-    ScanBot.prototype.run = function () {
+    TestBot.prototype.run = function () {
         var _this = this;
         this.shoot();
         this.turnTurretRight(45);
@@ -140,10 +145,7 @@ var ScanBot = (function (_super) {
             }); }
         });
     };
-    return ScanBot;
+    return TestBot;
 })(RobotBase);
-var bot = new ScanBot();
-onmessage = function (e) {
-    bot.receive(e.data);
-};
+RobotBase.exec(new TestBot);
 //# sourceMappingURL=bot-1.js.map

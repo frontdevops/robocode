@@ -121,9 +121,15 @@ class RobotBase {
 	}
 
 	run() {}
+
+	public static exec(bot:RobotBase) {
+		onmessage = function(e) {
+			bot.receive(e.data);
+		};
+	}
 }
 
-class ScanBot extends RobotBase {
+class TestBot extends RobotBase {
 
 	run() {
 		this.shoot();
@@ -163,8 +169,4 @@ class ScanBot extends RobotBase {
 	}
 }
 
-var bot = new ScanBot();
-
-onmessage = function(e) {
-	bot.receive(e.data);
-};
+RobotBase.exec(new TestBot);
