@@ -1,0 +1,43 @@
+<html>
+<head>
+    <style>
+        #field {
+            border: 1px solid #000;
+            padding: 10px;
+            width: 800px;
+            height: 400px;
+            background: url(img/background4.png);
+        }
+
+        #canvas {
+            border: 1px dotted #f00;
+        }
+    </style>
+</head>
+<body>
+<div id="field">
+    <canvas  width="800" height="400" id="canvas"></canvas>
+</div>
+
+<!--script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script-->
+<!--script src="//yastatic.net/lodash/2.4.1/lodash.min.js"></script-->
+<script src="http://requirejs.org/docs/release/2.1.15/minified/require.js"></script>
+<script>
+    require.config({
+        baseUrl: "/",
+        urlArgs: "x=" + (new Date().getTime()),
+        paths: {
+
+        }
+    });
+
+    window.dump = function() {
+        return console.log.apply(console, arguments);
+    }
+
+    require(["js/src/robocode/battle/manager.js"], function(app){
+        app.run({ canvasSelector: '#canvas' });
+    });
+</script>
+</body>
+</html>
