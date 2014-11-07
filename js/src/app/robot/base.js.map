@@ -1,1 +1,0 @@
-{"version":3,"file":"base.js","sourceRoot":"","sources":["base.ts"],"names":["RobotBase","RobotBase.constructor","RobotBase.move","RobotBase.moveForward","RobotBase.moveBackward"],"mappings":"AACA,IAAM,SAAS;IAEdA,SAFKA,SAASA;IAIdC,CAACA;IAEDD,wBAAIA,GAAJA;IAEAE,CAACA;IAEDF,+BAAWA,GAAXA;IAEAG,CAACA;IAEDH,gCAAYA,GAAZA;IAEAI,CAACA;IAGFJ,gBAACA;AAADA,CAACA,AAnBD,IAmBC"}
