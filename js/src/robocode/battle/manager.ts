@@ -391,10 +391,11 @@ export function run(cfg){
 		//(<HTMLCanvasElement> document.querySelector(cfg.canvasSelector)).getContext("2d")
 	);
 
+	// Create 5 bots
 	Bm.init(
 		Array(6)
 			.join()
-			.split('')
+			.split('') // N-1 = 6-1
 			.map( _=> "/js/src/robocode/robots/bot-1.js" )
 	);
 
