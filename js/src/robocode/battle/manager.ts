@@ -23,8 +23,7 @@ class BattleManager {
 	}
 
 	init(workers) {
-		var self = this,
-			robotId: string,
+		var robotId: string,
 			robot: any,
 			w: number,
 			l: number;
@@ -45,11 +44,10 @@ class BattleManager {
 				worker: new Worker(workers[w])
 			};
 
-			robot.worker.onmessage = (function (robotId) {
-				return function (e) {
-					self._receive(robotId, e.data);
-				}
-			})(robotId);
+			robot.worker.onmessage = (robotId => {
+					return e =>
+						this._receive(robotId, e.data);
+				})(robotId);
 
 			this._robots[robotId] = robot;
 
@@ -99,7 +97,8 @@ class BattleManager {
 
 	_update() {
 		var self = this,
-			k, e, robot, event, enemyRobot, k2,
+			k, e, robot, event, enemyRobot,
+			k2, newX, newY,
 			wallCollide: boolean,
 			robotHit: boolean;
 
@@ -131,8 +130,8 @@ class BattleManager {
 				if (wallCollide) {
 					robot.bullet = null;
 				} else {
-					for (var r2 in self._robots) {
-						var enemy_robot = self._robots[r2];
+					for (var r2 in this._robots) {
+						var enemy_robot = this._robots[r2];
 
 						if (robot.id == enemy_robot.id) continue;
 
@@ -143,7 +142,7 @@ class BattleManager {
 
 						if (robotHit) {
 							enemy_robot.health -= 3;
-							self._explosions.push({
+							this._explosions.push({
 								"x": enemy_robot.x,
 								"y": enemy_robot.y,
 								"progress": 1
@@ -174,8 +173,8 @@ class BattleManager {
 					case "MOVE":
 						event.progress++;
 
-						var newX = robot.x + (event.distance > 0 ? 1 : -1) * Math.cos(Utils.degrees2radians(robot.direction));
-						var newY = robot.y + (event.distance > 0 ? 1 : -1) * Math.sin(Utils.degrees2radians(robot.direction));
+						newX = robot.x + (event.distance > 0 ? 1 : -1) * Math.cos(Utils.degrees2radians(robot.direction));
+						newY = robot.y + (event.distance > 0 ? 1 : -1) * Math.sin(Utils.degrees2radians(robot.direction));
 
 						wallCollide = !Utils.isPointInSquare(
 							newX, newY,
