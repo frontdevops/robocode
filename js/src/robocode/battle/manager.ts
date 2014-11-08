@@ -96,8 +96,7 @@ class BattleManager {
 	}
 
 	_update() {
-		var self = this,
-			k, e, robot, event, enemyRobot,
+		var k, e, robot, event, enemyRobot,
 			k2, newX, newY,
 			wallCollide: boolean,
 			robotHit: boolean;
@@ -213,8 +212,8 @@ class BattleManager {
 								break;
 							}
 						}
-						if (robotHit) break;
 
+						if (robotHit) break;
 
 						if (event.progress > Math.abs(event.distance)) {
 							this._send(k, {
@@ -240,6 +239,7 @@ class BattleManager {
 							break;
 
 						}
+
 						robot.direction += (event.angle > 0 ? 1 : -1);
 						event.progress++;
 						robot.events.unshift(event);
@@ -254,12 +254,14 @@ class BattleManager {
 							break;
 
 						}
+
 						robot.turretDirection += (event.angle > 0 ? 1 : -1);
 						event.progress++;
 						robot.events.unshift(event);
 
 						break;
 				}
+
 				this._send(k, {
 					"signal": "UPDATE",
 					"x": robot.x,
@@ -272,71 +274,54 @@ class BattleManager {
 	_draw() {
 		var _i = 0,
 			k, robot, e, explosion, explosionImg,
-			color = ["black", "red", "orange", "purple"];
+			color = ["black", "red", "orange", "purple"],
+			ctx = this._ctx;
 
-		this._ctx.clearRect(0, 0, this.arena.width, this.arena.height);
+		ctx.clearRect(0, 0, this.arena.width, this.arena.height);
 
 		// draw robots
 		for (k in this._robots) {
 			robot = this._robots[k];
 
 			// draw robot
-			this._ctx.save();
-			this._ctx.translate(robot.x, robot.y);
-			this._ctx.rotate(Utils.degrees2radians(robot.direction));
+			ctx.save();
+			ctx.translate(robot.x, robot.y);
+			ctx.rotate(Utils.degrees2radians(robot.direction));
 
-			BattleManager.drawRobot(this._ctx, robot);
+			this.drawRobot(robot);
 
-			this._ctx.restore();
+			ctx.restore();
 
 			// draw bullet
 			if (robot.bullet) {
-				this._ctx.save();
-				this._ctx.translate(robot.bullet.x, robot.bullet.y);
-				this._ctx.rotate(Utils.degrees2radians(robot.bullet.direction));
-				this._ctx.fillRect(-3, -3, 6, 6);
-				this._ctx.restore();
+				ctx.save();
+				ctx.translate(robot.bullet.x, robot.bullet.y);
+				ctx.rotate(Utils.degrees2radians(robot.bullet.direction));
+				ctx.fillRect(-3, -3, 6, 6);
+				ctx.restore();
 			}
 
-			this._ctx.beginPath();
-			this._ctx.strokeStyle = "red";
-			this._ctx.moveTo(robot.x - 40, robot.y);
-			this._ctx.lineTo(robot.x + 40, robot.y);
-			this._ctx.moveTo(robot.x, robot.y - 40);
-			this._ctx.lineTo(robot.x, robot.y + 40);
-			this._ctx.stroke();
-			this._ctx.closePath();
+			ctx.beginPath();
+			ctx.strokeStyle = "red";
+			ctx.moveTo(robot.x - 40, robot.y);
+			ctx.lineTo(robot.x + 40, robot.y);
+			ctx.moveTo(robot.x, robot.y - 40);
+			ctx.lineTo(robot.x, robot.y + 40);
+			ctx.stroke();
+			ctx.closePath();
 
-			this._ctx.font = "10pt Arial";
-			this._ctx.strokeText(robot.id + " (" + robot.health + ")", robot.x - 20, robot.y + 35);
+			ctx.font = "10pt Arial";
+			ctx.strokeText(robot.id + " (" + robot.health + ")", robot.x - 20, robot.y + 35);
 
 
-			this._ctx.fillStyle = "green";
-			this._ctx.fillRect(robot.x - 20, robot.y + 35, robot.health, 5);
+			ctx.fillStyle = "green";
+			ctx.fillRect(robot.x - 20, robot.y + 35, robot.health, 5);
 
-			this._ctx.fillStyle = "red";
-			this._ctx.fillRect(robot.x - 20 + robot.health, robot.y + 35, 25 - robot.health, 5);
-
-/*
-			this._ctx.fillStyle = "blue";
-			this._ctx.fillRect(robot.x - 20, robot.y + 41, 50, 5);
-
-			this._ctx.fillStyle = "orange";
-			this._ctx.fillRect(robot.x - 20, robot.y + 47, 50, 5);
-
-			this._ctx.fillStyle = "gray";
-			this._ctx.fillRect(robot.x - 20, robot.y + 53, 50, 5);
-//*/
+			ctx.fillStyle = "red";
+			ctx.fillRect(robot.x - 20 + robot.health, robot.y + 35, 25 - robot.health, 5);
 
 			if (++_i > 3) _i = 0;
-			this._ctx.fillStyle = color[_i];
-			/*
-			this._ctx.fillStyle = "green";
-			this._ctx.fillRect(robot.x-20,robot.y+35, robot.health, 5);
-			this._ctx.fillStyle = "red";
-			this._ctx.fillRect(robot.x-20+robot.health,robot.y+35, 25-robot.health, 5);
-			this._ctx.fillStyle = "black";
-			 //*/
+			ctx.fillStyle = color[_i];
 		}
 
 		for (e = 0; e < this._explosions.length; e++) {
@@ -344,7 +329,7 @@ class BattleManager {
 			if (explosion.progress <= 17) {
 				explosionImg = new Image();
 				explosionImg.src = "img/explosion/explosion1-" + parseInt(explosion.progress) + '.png';
-				this._ctx.drawImage(explosionImg, explosion.x - 64, explosion.y - 64, 128, 128);
+				ctx.drawImage(explosionImg, explosion.x - 64, explosion.y - 64, 128, 128);
 				explosion.progress += .1;
 				this._explosions.unshift(explosion);
 			}
@@ -355,14 +340,14 @@ class BattleManager {
 			if (explosion.progress <= 71) {
 				explosionImg = new Image();
 				explosionImg.src = "img/explosion/explosion2-" + parseInt(explosion.progress) + '.png';
-				this._ctx.drawImage(explosionImg, explosion.x - 64, explosion.y - 64, 128, 128);
+				ctx.drawImage(explosionImg, explosion.x - 64, explosion.y - 64, 128, 128);
 				explosion.progress += .1;
 				this._explosions2.unshift(explosion);
 			}
 		}
 	}
 
-	public static drawRobot(ctx, robot) {
+	drawRobot(robot) {
 		var body = new Image(),
 			turret = new Image(),
 			radar = new Image();
@@ -371,14 +356,14 @@ class BattleManager {
 		turret.src 	= "img/turret.png";
 		radar.src 	= "img/radar.png";
 
-		ctx.drawImage(body, -18, -18, 36, 36);
-		ctx.rotate(Utils.degrees2radians(robot.turretDirection));
-		ctx.drawImage(turret, -25, -10, 54, 20);
+		this._ctx.drawImage(body, -18, -18, 36, 36);
+		this._ctx.rotate(Utils.degrees2radians(robot.turretDirection));
+		this._ctx.drawImage(turret, -25, -10, 54, 20);
 
 		robot.radarDirection++;
 
-		ctx.rotate(Utils.degrees2radians(robot.radarDirection));
-		ctx.drawImage(radar, -8, -11, 16, 22);
+		this._ctx.rotate(Utils.degrees2radians(robot.radarDirection));
+		this._ctx.drawImage(radar, -8, -11, 16, 22);
 	}
 
 }
