@@ -44,10 +44,9 @@ class BattleManager {
 				worker: new Worker(workers[w])
 			};
 
-			robot.worker.onmessage = (robotId => {
-					return e =>
-						this._receive(robotId, e.data);
-				})(robotId);
+			robot.worker.onmessage = (
+				robotId => (e => this._receive(robotId, e.data))
+			)(robotId);
 
 			this._robots[robotId] = robot;
 
